@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#3c404b">
+
+
+    <ListView
+        android:id="@+id/listViewDispositivos"
+        android:layout_width="177dp"
+        android:layout_height="177dp"
+        android:layout_marginEnd="76dp"
+        android:background="#00EBEBEB"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.971" />
+
+    <ImageButton
+        android:id="@+id/bt_blue"
+        android:layout_width="31dp"
+        android:layout_height="34dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="36dp"
+        android:backgroundTint="#00FFFFFF"
+        android:src="@drawable/engrenagem"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Grupo X centralizado -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linhaX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/X"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:textColor="#F8F8F8"
+            android:textSize="32sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/barx"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/barx"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:max="180"
+            android:progress="0"
+            android:progressDrawable="@drawable/seekbar_prog"
+            android:thumb="@drawable/thumb"
+            app:layout_constraintBaseline_toBaselineOf="@id/X"
+            app:layout_constraintStart_toEndOf="@id/X" />
+
+        <TextView
+            android:id="@+id/grausx"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:background="#000000"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="#E7DFDF"
+            android:textSize="30sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/barx"
+            app:layout_constraintStart_toEndOf="@id/barx" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Grupo Y centralizado -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linhaY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linhaX">
+
+        <TextView
+            android:id="@+id/Y"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Y"
+            android:textColor="#F8F8F8"
+            android:textSize="32sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/bary"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/bary"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:max="180"
+            android:progress="0"
+            android:progressDrawable="@drawable/seekbar_prog"
+            android:thumb="@drawable/thumb"
+            app:layout_constraintBaseline_toBaselineOf="@id/Y"
+            app:layout_constraintStart_toEndOf="@id/Y" />
+
+        <TextView
+            android:id="@+id/grausy"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:background="#000000"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="#E7DFDF"
+            android:textSize="30sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/bary"
+            app:layout_constraintStart_toEndOf="@id/bary" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Grupo Z centralizado -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linhaZ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linhaY">
+
+        <TextView
+            android:id="@+id/Z"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Z"
+            android:textColor="#F8F8F8"
+            android:textSize="32sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/barz"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/barz"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:max="180"
+            android:progress="0"
+            android:progressDrawable="@drawable/seekbar_prog"
+            android:thumb="@drawable/thumb"
+            app:layout_constraintBaseline_toBaselineOf="@id/Z"
+            app:layout_constraintStart_toEndOf="@id/Z" />
+
+        <TextView
+            android:id="@+id/grausz"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:background="#000000"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="#E7DFDF"
+            android:textSize="30sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/barz"
+            app:layout_constraintStart_toEndOf="@id/barz" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Título GARRA -->
+    <TextView
+        android:id="@+id/garra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="GARRA"
+        android:textColor="#F8F8F8"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linhaZ" />
+
+    <ImageButton
+        android:id="@+id/bt_abre"
+        android:layout_width="114dp"
+        android:layout_height="103dp"
+        android:layout_marginTop="408dp"
+        android:layout_marginEnd="52dp"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/abre" />
+
+    <ImageButton
+        android:id="@+id/bt_fecha"
+        android:layout_width="111dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="408dp"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/nigger" />
+</androidx.constraintlayout.widget.ConstraintLayout>
