@@ -126,8 +126,18 @@ class MainActivity : AppCompatActivity() {
                     progress: Int,
                     fromUser: Boolean
                 ) {
+                    // Atualiza o valor na tela (mostrando o valor original da barra)
                     textView.text = progress.toString()
-                    sendBluetoothMessage("$axis:$progress")
+
+                    // Calcula o valor a ser enviado de acordo com o eixo
+                    val valorParaEnviar = when (axis) {
+                        "Y" -> progress + 180 // Se for o eixo Y, soma 180
+                        "Z" -> progress + 360 // Se for o eixo Z, soma 360
+                        else -> progress      // Se for o eixo X, envia o valor original
+                    }
+
+                    // Envia a mensagem Bluetooth com o prefixo do eixo e o valor calculado
+                    sendBluetoothMessage("$axis:$valorParaEnviar")
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
@@ -138,8 +148,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupButtons() {
         Log.d(TAG, "Configurando botões")
-        findViewById<ImageButton>(R.id.bt_abre).setOnClickListener { sendBluetoothMessage("ABRE") }
-        findViewById<ImageButton>(R.id.bt_fecha).setOnClickListener { sendBluetoothMessage("FECHA") }
+        findViewById<ImageButton>(R.id.bt_abre).setOnClickListener { sendBluetoothMessage("1000") }
+        findViewById<ImageButton>(R.id.bt_fecha).setOnClickListener { sendBluetoothMessage("1001") }
     }
 
     private fun setupDeviceList() {
