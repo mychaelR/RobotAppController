@@ -1,4 +1,5 @@
 package com.example.aprendendo
+
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
@@ -19,12 +20,15 @@ class MainActivity : AppCompatActivity() {
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy { BluetoothAdapter.getDefaultAdapter() }
     private lateinit var listView: ListView
-    private lateinit var btBlue: ImageButton // Corrigido de Button para ImageButton
+    private lateinit var btBlue: ImageButton
     private val deviceList = mutableListOf<BluetoothDevice>()
     private var socket: BluetoothSocket? = null
     private val MY_UUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
     private val REQUEST_PERMISSIONS_CODE = 1
     private val TAG = "MainActivity"
+
+    // Variável para armazenar o valor de cada SeekBar
+    private val seekValues = mutableMapOf<String, Int>("X" to 0, "Y" to 0, "Z" to 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +40,6 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "Permissões verificadas")
         } catch (e: Exception) {
             Log.e(TAG, "Erro no onCreate: ${e.message}", e)
-           // showToast("Erro ao iniciar: ${e.message}")
             finish()
         }
     }
@@ -82,7 +85,6 @@ class MainActivity : AppCompatActivity() {
             if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
                 initializeControls()
             } else {
-                //showToast("Permissões necessárias não concedidas")
                 finish()
             }
         }
@@ -92,14 +94,12 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "Inicializando controles")
         if (bluetoothAdapter == null) {
             Log.e(TAG, "Bluetooth não suportado no dispositivo")
-           // showToast("Bluetooth não suportado")
             finish()
             return
         }
 
         if (!bluetoothAdapter!!.isEnabled) {
             Log.w(TAG, "Bluetooth não está habilitado")
-            //showToast("Ative o Bluetooth")
             finish()
             return
         }
@@ -120,28 +120,28 @@ class MainActivity : AppCompatActivity() {
         seekBars.forEach { (barId, textId, axis) ->
             val seekBar = findViewById<SeekBar>(barId)
             val textView = findViewById<TextView>(textId)
+
+            textView.text = seekBar.progress.toString()
+            seekValues[axis] = seekBar.progress
+
             seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(
-                    seekBar: SeekBar?,
-                    progress: Int,
-                    fromUser: Boolean
-                ) {
-                    // Atualiza o valor na tela (mostrando o valor original da barra)
+                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                     textView.text = progress.toString()
-
-                    // Calcula o valor a ser enviado de acordo com o eixo
-                    val valorParaEnviar = when (axis) {
-                        "Y" -> progress + 180 // Se for o eixo Y, soma 180
-                        "Z" -> progress + 360 // Se for o eixo Z, soma 360
-                        else -> progress      // Se for o eixo X, envia o valor original
-                    }
-
-                    // Envia a mensagem Bluetooth com o prefixo do eixo e o valor calculado
-                    sendBluetoothMessage("$axis:$valorParaEnviar")
+                    seekValues[axis] = progress
                 }
 
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    val valorX = seekValues["X"] ?: 0
+                    val valorY = (seekValues["Y"] ?: 0) + 180
+                    val valorZ = (seekValues["Z"] ?: 0) + 360
+
+                    val mensagemParaEnviar = "<$valorX,$valorY,$valorZ>"
+
+                    Log.d(TAG, "$mensagemParaEnviar")
+                    sendBluetoothMessage(mensagemParaEnviar)
+                }
             })
         }
     }
@@ -160,7 +160,6 @@ class MainActivity : AppCompatActivity() {
         btBlue.setOnClickListener {
             listView.visibility = View.VISIBLE
             fetchPairedDevices()
-
         }
 
         listView.setOnItemClickListener { _, _, position, _ ->
@@ -172,7 +171,10 @@ class MainActivity : AppCompatActivity() {
     private fun fetchPairedDevices() {
         Log.d(TAG, "Buscando dispositivos pareados")
         if (bluetoothAdapter == null || !bluetoothAdapter!!.isEnabled) {
-           // showToast("Ative o Bluetooth")
+            return
+        }
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             return
         }
 
@@ -187,8 +189,6 @@ class MainActivity : AppCompatActivity() {
                 deviceList.map { it.name ?: it.address }
             )
             listView.adapter = adapter
-        } else {
-            //showToast("Nenhum dispositivo pareado")
         }
     }
 
@@ -196,17 +196,14 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "Conectando ao dispositivo: ${device.name}")
         thread {
             try {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    return@thread
+                }
                 socket?.close()
                 socket = device.createRfcommSocketToServiceRecord(MY_UUID)
                 socket?.connect()
-               // runOnUiThread {
-                    //showToast("Conectado a ${device.name}")
-              //  }
             } catch (e: IOException) {
                 Log.e(TAG, "Falha na conexão: ${e.message}", e)
-                //runOnUiThread {
-                    //showToast("Falha na conexão: ${e.message}")
-               // }
             }
         }
     }
@@ -214,27 +211,17 @@ class MainActivity : AppCompatActivity() {
     private fun sendBluetoothMessage(message: String) {
         Log.d(TAG, "Enviando mensagem: $message")
         if (socket == null || !socket!!.isConnected) {
-            //showToast("Não conectado a nenhum dispositivo")
-           return
-       }
+            return
+        }
 
-      thread {
+        thread {
             try {
                 socket?.outputStream?.write(message.toByteArray())
             } catch (e: IOException) {
-               Log.e(TAG, "Erro ao enviar mensagem: ${e.message}", e)
-               // runOnUiThread {
-                    //showToast("Erro ao enviar mensagem")
-               // }
+                Log.e(TAG, "Erro ao enviar mensagem: ${e.message}", e)
             }
         }
     }
-
-   // private fun showToast(message: String) {
-    //    runOnUiThread {
-    //        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    //    }
-   // }
 
     override fun onDestroy() {
         Log.d(TAG, "onDestroy chamado")
