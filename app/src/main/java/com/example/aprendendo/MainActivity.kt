@@ -7,6 +7,8 @@ import android.bluetooth.BluetoothSocket
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -15,6 +17,8 @@ import androidx.core.app.ActivityCompat
 import java.io.IOException
 import java.util.UUID
 import kotlin.concurrent.thread
+import kotlin.time.Duration
+import android.content.Context
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,6 +30,8 @@ class MainActivity : AppCompatActivity() {
     private val MY_UUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
     private val REQUEST_PERMISSIONS_CODE = 1
     private val TAG = "MainActivity"
+
+
 
     // Variável para armazenar o valor de cada SeekBar
     private val seekValues = mutableMapOf<String, Int>("X" to 0, "Y" to 0, "Z" to 0)
@@ -137,19 +143,39 @@ class MainActivity : AppCompatActivity() {
                     val valorY = (seekValues["Y"] ?: 0) + 180
                     val valorZ = (seekValues["Z"] ?: 0) + 360
 
-                    val mensagemParaEnviar = "<$valorX,$valorY,$valorZ>"
-
-                    Log.d(TAG, "$mensagemParaEnviar")
-                    sendBluetoothMessage(mensagemParaEnviar)
+                    val mensagemParaEnviarx = "<$valorX>"
+                    val mensagemParaEnviary = "<$valorY>"
+                    val mensagemParaEnviarz = "<$valorZ>"
+                    Log.d(TAG, "$mensagemParaEnviarx")
+                    sendBluetoothMessage(mensagemParaEnviarx)
+                    Log.d(TAG, "$mensagemParaEnviary")
+                    sendBluetoothMessage(mensagemParaEnviary)
+                    Log.d(TAG, "$mensagemParaEnviarz")
+                    sendBluetoothMessage(mensagemParaEnviarz)
                 }
             })
         }
     }
 
+
+    private fun vib(duration: Long){
+        val vibrador = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val efeito = VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE)
+            vibrador.vibrate(efeito)
+        }else{
+
+            vibrador.vibrate(duration)
+
+        }
+    }
+
     private fun setupButtons() {
         Log.d(TAG, "Configurando botões")
-        findViewById<ImageButton>(R.id.bt_abre).setOnClickListener { sendBluetoothMessage("1000") }
-        findViewById<ImageButton>(R.id.bt_fecha).setOnClickListener { sendBluetoothMessage("1001") }
+        findViewById<ImageButton>(R.id.bt_abre).setOnClickListener { sendBluetoothMessage("1000")
+            vib(500) }
+        findViewById<ImageButton>(R.id.bt_fecha).setOnClickListener { sendBluetoothMessage("1001")
+            vib(500)}
     }
 
     private fun setupDeviceList() {
