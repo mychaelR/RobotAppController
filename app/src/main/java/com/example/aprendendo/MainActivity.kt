@@ -19,6 +19,12 @@ import java.util.UUID
 import kotlin.concurrent.thread
 import kotlin.time.Duration
 import android.content.Context
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.view.animation.OvershootInterpolator
+
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -170,12 +176,50 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun animarClique(view: View, escala: Float = 1.3f, duracao: Long = 40) {
+        val scaleUpX = ObjectAnimator.ofFloat(view, "scaleX", 1f, escala)
+        val scaleUpY = ObjectAnimator.ofFloat(view, "scaleY", 1f, escala)
+        val scaleDownX = ObjectAnimator.ofFloat(view, "scaleX", escala, 1f)
+        val scaleDownY = ObjectAnimator.ofFloat(view, "scaleY", escala, 1f)
+
+        val scaleUp = AnimatorSet().apply {
+            playTogether(scaleUpX, scaleUpY)
+            duration = duracao
+            interpolator = android.view.animation.OvershootInterpolator()
+        }
+
+        val scaleDown = AnimatorSet().apply {
+            playTogether(scaleDownX, scaleDownY)
+            duration = duracao
+            startDelay = duracao
+            interpolator = android.view.animation.OvershootInterpolator()
+        }
+
+        AnimatorSet().apply {
+            playSequentially(scaleUp, scaleDown)
+            start()
+        }
+    }
+
     private fun setupButtons() {
         Log.d(TAG, "Configurando botões")
-        findViewById<ImageButton>(R.id.bt_abre).setOnClickListener { sendBluetoothMessage("1000")
-            vib(500) }
-        findViewById<ImageButton>(R.id.bt_fecha).setOnClickListener { sendBluetoothMessage("1001")
-            vib(500)}
+        val bt_abre = findViewById<ImageButton>(R.id.bt_abre)
+
+        bt_abre.setOnClickListener {
+            sendBluetoothMessage("1000")
+            vib(500)
+            animarClique(bt_abre)
+        }
+
+
+
+
+        val bt_fecha = findViewById<ImageButton>(R.id.bt_fecha)
+            bt_fecha.setOnClickListener {
+                sendBluetoothMessage("1001")
+                vib(500)
+                animarClique(bt_fecha)
+            }
     }
 
     private fun setupDeviceList() {
