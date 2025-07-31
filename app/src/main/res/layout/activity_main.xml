@@ -15,15 +15,7 @@
 
     <!-- Título GARRA -->
 
-    <ListView
-        android:id="@+id/listViewDispositivos"
-        android:layout_width="168dp"
-        android:layout_height="163dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="52dp"
-        android:background="#00EBEBEB"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <ImageButton
         android:id="@+id/bt_blue"
@@ -193,24 +185,50 @@
 
     <ImageButton
         android:id="@+id/bt_abre"
-        android:layout_width="112dp"
-        android:layout_height="100dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginBottom="124dp"
+        android:layout_width="93dp"
+        android:layout_height="84dp"
+        android:layout_marginEnd="56dp"
+        android:layout_marginBottom="140dp"
         android:backgroundTint="#00FFFFFF"
+        android:padding="0dp"
+        android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/abre" />
+        app:srcCompat="@drawable/hujil" />
 
     <ImageButton
         android:id="@+id/bt_fecha"
-        android:layout_width="111dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="136dp"
-        android:layout_marginBottom="124dp"
+        android:layout_width="93dp"
+        android:layout_height="84dp"
+        android:layout_marginStart="144dp"
+        android:layout_marginBottom="140dp"
         android:backgroundTint="#00FFFFFF"
+        android:padding="0dp"
+        android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/nigger" />
+        app:srcCompat="@drawable/pinjto" />
+
+    <Button
+        android:id="@+id/joybtn"
+        android:layout_width="312dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="52dp"
+        android:layout_marginBottom="36dp"
+        android:backgroundTint="#1e232e"
+        android:text="JOYSTICK MODE"
+        android:textColor="@color/white"
+        app:cornerRadius="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ListView
+        android:id="@+id/listadis"
+        android:layout_width="357dp"
+        android:layout_height="429dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

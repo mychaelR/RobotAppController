@@ -21,9 +21,10 @@ import kotlin.time.Duration
 import android.content.Context
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.animation.OvershootInterpolator
-
-
+import androidx.appcompat.app.AlertDialog
 
 
 class MainActivity : AppCompatActivity() {
@@ -39,8 +40,8 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    // Variável para armazenar o valor de cada SeekBar
-    private val seekValues = mutableMapOf<String, Int>("X" to 0, "Y" to 0, "Z" to 0)
+
+    private val seekValues = mutableMapOf("X" to 0, "Y" to 0, "Z" to 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,22 +104,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeControls() {
-        Log.d(TAG, "Inicializando controles")
-        if (bluetoothAdapter == null) {
-            Log.e(TAG, "Bluetooth não suportado no dispositivo")
-            finish()
-            return
-        }
+       // Log.d(TAG, "Inicializando controles")
+       // if (bluetoothAdapter == null) {
+         //   Log.e(TAG, "Bluetooth não suportado no dispositivo")
+       //     finish()
+       //     return
+       // }
 
-        if (!bluetoothAdapter!!.isEnabled) {
-            Log.w(TAG, "Bluetooth não está habilitado")
-            finish()
-            return
-        }
+       // if (!bluetoothAdapter!!.isEnabled) {
+        //    Log.w(TAG, "Bluetooth não está habilitado")
+         //   finish()
+        //    return
+       // }
 
         setupSeekBars()
         setupButtons()
         setupDeviceList()
+        setupJoystick()
     }
 
     private fun setupSeekBars() {
@@ -176,7 +178,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun animarClique(view: View, escala: Float = 1.3f, duracao: Long = 40) {
+    fun animarClique(view: View, escala: Float = 1.3f, duracao: Long = 20) {
         val scaleUpX = ObjectAnimator.ofFloat(view, "scaleX", 1f, escala)
         val scaleUpY = ObjectAnimator.ofFloat(view, "scaleY", 1f, escala)
         val scaleDownX = ObjectAnimator.ofFloat(view, "scaleX", escala, 1f)
@@ -201,13 +203,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private fun setupButtons() {
         Log.d(TAG, "Configurando botões")
         val bt_abre = findViewById<ImageButton>(R.id.bt_abre)
 
         bt_abre.setOnClickListener {
             sendBluetoothMessage("1000")
-            vib(500)
+           // vib(500)
             animarClique(bt_abre)
         }
 
@@ -217,25 +220,46 @@ class MainActivity : AppCompatActivity() {
         val bt_fecha = findViewById<ImageButton>(R.id.bt_fecha)
             bt_fecha.setOnClickListener {
                 sendBluetoothMessage("1001")
-                vib(500)
+               // vib(500)
                 animarClique(bt_fecha)
             }
     }
 
+    private fun setupJoystick() {
+    val btnjoy = findViewById<Button>(R.id.joybtn)
+
+        btnjoy.setOnClickListener {
+            val intent = Intent(this, Joystick::class.java)
+            startActivity(intent)
+        }
+
+    }
+
     private fun setupDeviceList() {
+        var abre = false
         Log.d(TAG, "Configurando lista de dispositivos")
         btBlue = findViewById(R.id.bt_blue)
-        listView = findViewById(R.id.listViewDispositivos)
+        listView = findViewById(R.id.listadis)
 
         btBlue.setOnClickListener {
-            listView.visibility = View.VISIBLE
-            fetchPairedDevices()
+            if(!abre) {
+                listView.visibility = View.VISIBLE
+                fetchPairedDevices()
+                abre = true
+            }
+            else{
+                listView.visibility = View.INVISIBLE
+                abre = false
+            }
         }
 
         listView.setOnItemClickListener { _, _, position, _ ->
             connectToDevice(deviceList[position])
             listView.visibility = View.INVISIBLE
         }
+
+
+
     }
 
     private fun fetchPairedDevices() {

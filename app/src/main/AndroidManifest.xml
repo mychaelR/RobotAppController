@@ -29,9 +29,18 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".Joystick"
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+
+            />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+
+
     </application>
 
 </manifest>
