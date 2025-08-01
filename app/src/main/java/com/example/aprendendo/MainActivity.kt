@@ -218,10 +218,10 @@ class MainActivity : AppCompatActivity() {
 
 
         val bt_fecha = findViewById<ImageButton>(R.id.bt_fecha)
-            bt_fecha.setOnClickListener {
-                sendBluetoothMessage("1001")
+                    bt_fecha.setOnClickListener {
+                     sendBluetoothMessage("1001")
                // vib(500)
-                animarClique(bt_fecha)
+                     animarClique(bt_fecha)
             }
     }
 
