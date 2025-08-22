@@ -219,6 +219,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    @SuppressLint("SuspiciousIndentation")
     private fun setupButtons() {
         Log.d(TAG, "Configurando botões")
         val bt_abre = findViewById<ImageButton>(R.id.bt_abre)

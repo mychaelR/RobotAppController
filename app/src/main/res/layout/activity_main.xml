@@ -16,14 +16,14 @@
     <!-- Título GARRA -->
 
 
-
     <ImageButton
         android:id="@+id/bt_blue"
-        android:layout_width="31dp"
-        android:layout_height="34dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="#00FFFFFF"
+        android:scaleType="centerCrop"
         android:src="@drawable/engrenagem"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -218,6 +218,7 @@
         android:backgroundTint="#1e232e"
         android:text="JOYSTICK MODE"
         android:textColor="@color/white"
+        android:textSize="25dp"
         app:cornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
