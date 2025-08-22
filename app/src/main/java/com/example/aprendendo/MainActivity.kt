@@ -68,6 +68,7 @@ class MainActivity : AppCompatActivity() {
             )
         } else {
             initializeControls()
+
         }
     }
 
@@ -121,6 +122,7 @@ class MainActivity : AppCompatActivity() {
         setupButtons()
         setupDeviceList()
         setupJoystick()
+        listView.visibility = View.INVISIBLE
     }
 
     private fun setupSeekBars() {
@@ -142,11 +144,6 @@ class MainActivity : AppCompatActivity() {
                 override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                     textView.text = progress.toString()
                     seekValues[axis] = progress
-                }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     val valorX = seekValues["X"] ?: 0
                     val valorY = (seekValues["Y"] ?: 0) + 180
                     val valorZ = (seekValues["Z"] ?: 0) + 360
@@ -160,6 +157,24 @@ class MainActivity : AppCompatActivity() {
                     sendBluetoothMessage(mensagemParaEnviary)
                     Log.d(TAG, "$mensagemParaEnviarz")
                     sendBluetoothMessage(mensagemParaEnviarz)
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                //    val valorX = seekValues["X"] ?: 0
+                 //   val valorY = (seekValues["Y"] ?: 0) + 180
+                 //   val valorZ = (seekValues["Z"] ?: 0) + 360
+
+                 //  val mensagemParaEnviarx = "<$valorX>"
+                 ///   val mensagemParaEnviary = "<$valorY>"
+                 //   val mensagemParaEnviarz = "<$valorZ>"
+                 //   Log.d(TAG, "$mensagemParaEnviarx")
+                 //   sendBluetoothMessage(mensagemParaEnviarx)
+                 //   Log.d(TAG, "$mensagemParaEnviary")
+                 //   sendBluetoothMessage(mensagemParaEnviary)
+                //    Log.d(TAG, "$mensagemParaEnviarz")
+                  //  sendBluetoothMessage(mensagemParaEnviarz)
                 }
             })
         }
@@ -225,6 +240,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun setupJoystick() {
     val btnjoy = findViewById<Button>(R.id.joybtn)
 
@@ -241,15 +257,18 @@ class MainActivity : AppCompatActivity() {
         btBlue = findViewById(R.id.bt_blue)
         listView = findViewById(R.id.listadis)
 
+
         btBlue.setOnClickListener {
             if(!abre) {
                 listView.visibility = View.VISIBLE
                 fetchPairedDevices()
                 abre = true
+                vib(100)
             }
             else{
                 listView.visibility = View.INVISIBLE
                 abre = false
+                vib(100)
             }
         }
 
