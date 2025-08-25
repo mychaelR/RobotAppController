@@ -30,7 +30,7 @@ import androidx.appcompat.app.AlertDialog
 class MainActivity : AppCompatActivity() {
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy { BluetoothAdapter.getDefaultAdapter() }
-    private lateinit var listView: ListView
+
     private lateinit var btBlue: ImageButton
     private val deviceList = mutableListOf<BluetoothDevice>()
     private var socket: BluetoothSocket? = null
@@ -88,6 +88,44 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("MissingPermission")
+    private fun alert (){
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder
+            .setTitle("CONFIGURAÇÕES")
+
+            .setItems(arrayOf("Dispositivos bluetooth", "Dev mode",)) { dialog, which ->
+            when (which) {
+                0 -> {
+                     fetchPairedDevices()
+
+                    if (deviceList.isNotEmpty()) {
+                        val bluetoothDialog = AlertDialog.Builder(this)
+                            .setTitle("BLUETOOTH")
+                            .setItems(deviceList.map { it.name ?: it.address }.toTypedArray()) { dialog2, which ->
+                                val selectedDevice = deviceList[which]
+                                connectToDevice(selectedDevice)
+                                Toast.makeText(this, "Conectando a ${selectedDevice.name ?: selectedDevice.address}", Toast.LENGTH_SHORT).show()
+                            }
+                            .create()
+
+                        bluetoothDialog.show()
+                    } else {
+                        Toast.makeText(this, "Nenhum dispositivo pareado encontrado", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                1 -> {
+
+                }
+            }
+            }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -105,24 +143,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeControls() {
-       // Log.d(TAG, "Inicializando controles")
-       // if (bluetoothAdapter == null) {
-         //   Log.e(TAG, "Bluetooth não suportado no dispositivo")
-       //     finish()
-       //     return
-       // }
-
-       // if (!bluetoothAdapter!!.isEnabled) {
-        //    Log.w(TAG, "Bluetooth não está habilitado")
-         //   finish()
-        //    return
-       // }
-
         setupSeekBars()
         setupButtons()
         setupDeviceList()
         setupJoystick()
-        listView.visibility = View.INVISIBLE
     }
 
     private fun setupSeekBars() {
@@ -162,19 +186,6 @@ class MainActivity : AppCompatActivity() {
                 override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                //    val valorX = seekValues["X"] ?: 0
-                 //   val valorY = (seekValues["Y"] ?: 0) + 180
-                 //   val valorZ = (seekValues["Z"] ?: 0) + 360
-
-                 //  val mensagemParaEnviarx = "<$valorX>"
-                 ///   val mensagemParaEnviary = "<$valorY>"
-                 //   val mensagemParaEnviarz = "<$valorZ>"
-                 //   Log.d(TAG, "$mensagemParaEnviarx")
-                 //   sendBluetoothMessage(mensagemParaEnviarx)
-                 //   Log.d(TAG, "$mensagemParaEnviary")
-                 //   sendBluetoothMessage(mensagemParaEnviary)
-                //    Log.d(TAG, "$mensagemParaEnviarz")
-                  //  sendBluetoothMessage(mensagemParaEnviarz)
                 }
             })
         }
@@ -226,7 +237,6 @@ class MainActivity : AppCompatActivity() {
 
         bt_abre.setOnClickListener {
             sendBluetoothMessage("1000")
-           // vib(500)
             animarClique(bt_abre)
         }
 
@@ -234,16 +244,15 @@ class MainActivity : AppCompatActivity() {
 
 
         val bt_fecha = findViewById<ImageButton>(R.id.bt_fecha)
-                    bt_fecha.setOnClickListener {
-                     sendBluetoothMessage("1001")
-               // vib(500)
-                     animarClique(bt_fecha)
-            }
+        bt_fecha.setOnClickListener {
+            sendBluetoothMessage("1001")
+            animarClique(bt_fecha)
+        }
     }
 
     @SuppressLint("SuspiciousIndentation")
     private fun setupJoystick() {
-    val btnjoy = findViewById<Button>(R.id.joybtn)
+        val btnjoy = findViewById<Button>(R.id.joybtn)
 
         btnjoy.setOnClickListener {
             val intent = Intent(this, Joystick::class.java)
@@ -253,32 +262,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupDeviceList() {
-        var abre = false
         Log.d(TAG, "Configurando lista de dispositivos")
         btBlue = findViewById(R.id.bt_blue)
-        listView = findViewById(R.id.listadis)
 
 
         btBlue.setOnClickListener {
-            if(!abre) {
-                listView.visibility = View.VISIBLE
-                fetchPairedDevices()
-                abre = true
-                vib(100)
-            }
-            else{
-                listView.visibility = View.INVISIBLE
-                abre = false
-                vib(100)
-            }
+            alert()
         }
-
-        listView.setOnItemClickListener { _, _, position, _ ->
-            connectToDevice(deviceList[position])
-            listView.visibility = View.INVISIBLE
-        }
-
-
 
     }
 
@@ -302,7 +292,7 @@ class MainActivity : AppCompatActivity() {
                 android.R.layout.simple_list_item_1,
                 deviceList.map { it.name ?: it.address }
             )
-            listView.adapter = adapter
+
         }
     }
 
