@@ -7,6 +7,7 @@ android {
     namespace = "com.example.aprendendo"
     compileSdk = 35
 
+
     defaultConfig {
         applicationId = "com.example.aprendendo"
         minSdk = 24
