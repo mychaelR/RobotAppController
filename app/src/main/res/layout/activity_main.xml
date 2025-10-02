@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     android:background="#3c404b">
 
-
-    <!-- Grupo X centralizado -->
-
-    <!-- Grupo Y centralizado -->
-
-    <!-- Grupo Z centralizado -->
-
-    <!-- Título GARRA -->
-
-
     <ImageButton
         android:id="@+id/bt_blue"
         android:layout_width="70dp"

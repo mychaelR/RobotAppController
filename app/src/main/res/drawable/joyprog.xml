@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item android:id="@android:id/background"
         android:height="65dp"
         android:bottom="7dp"
@@ -10,6 +11,16 @@
         </shape>
     </item>
 
-
+    <item android:id="@android:id/progress"
+        android:height="65dp"
+        android:bottom="7dp"
+        android:top="7dp">
+        <clip>
+            <shape android:shape="rectangle">
+                <solid android:color="@null"/>
+                <corners android:radius="55dp"/>
+            </shape>
+        </clip>
+    </item>
 
 </layer-list>

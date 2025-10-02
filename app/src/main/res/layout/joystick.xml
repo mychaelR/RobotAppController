@@ -10,9 +10,10 @@
         android:id="@+id/joy1"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:progress="50"
         android:progressDrawable="@drawable/joyprog"
         android:splitTrack="false"
+        android:progress="50"
+        android:max="100"
         android:thumb="@drawable/thumbjoy"
         android:thumbTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -59,6 +60,7 @@
         android:layout_height="75dp"
         android:padding="0dp"
         android:scaleType="centerInside"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.726"
@@ -73,6 +75,7 @@
         android:layout_height="75dp"
         android:padding="0dp"
         android:scaleType="centerInside"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.866"
@@ -88,7 +91,7 @@
         android:backgroundTint="#1e232e"
         android:text="CUSTOM MODE"
         android:textColor="@color/white"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:cornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -96,16 +99,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.908" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/braci" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
