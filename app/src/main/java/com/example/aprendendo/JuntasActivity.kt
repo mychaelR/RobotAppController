@@ -7,16 +7,14 @@ import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.os.VibrationEffect
-import android.os.Vibrator
 import android.util.Log
 import android.view.View
 import android.view.animation.OvershootInterpolator
+import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -27,20 +25,20 @@ import java.io.IOException
 import java.util.UUID
 import kotlin.concurrent.thread
 
-class MainActivity : AppCompatActivity() {
+class JuntasActivity : AppCompatActivity() {
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy { BluetoothAdapter.getDefaultAdapter() }
     private val deviceList = mutableListOf<BluetoothDevice>()
     private var socket: BluetoothSocket? = null
     private val MY_UUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
     private val REQUEST_PERMISSIONS_CODE = 1
-    private val TAG = "MainActivity"
+    private val TAG = "JuntasActivity"
 
     private val seekValues = mutableMapOf("X" to 0, "Y" to 0, "Z" to 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.juntas_activity)
         checkPermissions()
     }
 
@@ -135,7 +133,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         seekBars.forEach { (barId, textId, axis) ->
-            val seekBar = findViewById<android.widget.SeekBar>(barId) // <-- SeekBar
+            val seekBar = findViewById<SeekBar>(barId) // <-- SeekBar
             val textView = findViewById<TextView>(textId)
 
             val initialProgress = seekBar.progress
@@ -147,8 +145,8 @@ class MainActivity : AppCompatActivity() {
             textView.text = initialValue.toString()
             seekValues[axis] = initialProgress
 
-            seekBar.setOnSeekBarChangeListener(object : android.widget.SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(s: android.widget.SeekBar?, progress: Int, fromUser: Boolean) {
+            seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(s: SeekBar?, progress: Int, fromUser: Boolean) {
                     seekValues[axis] = progress
                     val displayValue = when (axis) {
                         "Y" -> progress + 180
@@ -164,8 +162,8 @@ class MainActivity : AppCompatActivity() {
                     BluetoothService.sendMessage("<$valorFinalZ>")
 
                 }
-                override fun onStartTrackingTouch(s: android.widget.SeekBar?) {}
-                override fun onStopTrackingTouch(s: android.widget.SeekBar?) {}
+                override fun onStartTrackingTouch(s: SeekBar?) {}
+                override fun onStopTrackingTouch(s: SeekBar?) {}
             })
         }
     }
@@ -188,7 +186,7 @@ class MainActivity : AppCompatActivity() {
     private fun setupJoystick() {
         val btnjoy = findViewById<MaterialButton>(R.id.joybtn)
         btnjoy.setOnClickListener {
-            val intent = Intent(this@MainActivity, JoystickActivity::class.java)
+            val intent = Intent(this@JuntasActivity, JoystickActivity::class.java)
             startActivity(intent)
         }
     }

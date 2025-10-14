@@ -21,24 +21,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Aprendendo"
         tools:targetApi="31" >
-        <activity android:name=".MainActivity"
+        <activity android:name=".AxisActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            />
+
+        <activity android:name=".JoystickActivity"
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            />
+
+        <activity android:name=".JuntasActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            />
+
+        <activity android:name=".custom"
+            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            />
+
+        <activity android:name=".TelaIncial"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".JoystickActivity"
-            android:screenOrientation="landscape"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-
-            />
-        <activity android:name=".custom"
-            android:screenOrientation="landscape"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-
-            />
 
         <meta-data
             android:name="preloaded_fonts"

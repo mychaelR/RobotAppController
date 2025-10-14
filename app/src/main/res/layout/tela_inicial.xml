@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#3c404b"
+    tools:ignore="ExtraText">
+
+    //botão para mudar para o modo de config
+
+    //botão para mudar para o modo de axis
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bt_config"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@null"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:padding="0dp"
+        app:backgroundTint="@color/transparent"
+        app:icon="@drawable/engrenagem"
+        app:iconGravity="textEnd"
+        app:iconSize="55dp"
+        app:iconTint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    //botão para mudar para o modo juntas
+
+    //botão para mudar para o modo dpad
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bt_axis"
+        android:layout_width="410dp"
+        android:layout_height="196dp"
+        android:backgroundTint="#0C5DC6"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:padding="0dp"
+        app:backgroundTint="@color/transparent"
+        app:iconGravity="textEnd"
+        app:iconTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.207" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bt_juntas"
+        android:layout_width="410dp"
+        android:layout_height="196dp"
+        android:backgroundTint="#053d86"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:padding="0dp"
+        app:backgroundTint="@color/transparent"
+        app:iconGravity="textEnd"
+        app:iconTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.573" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bt_dpad"
+        android:layout_width="410dp"
+        android:layout_height="196dp"
+        android:backgroundTint="#021f4b"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:padding="0dp"
+        app:backgroundTint="@color/transparent"
+        app:iconGravity="textEnd"
+        app:iconTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.955" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

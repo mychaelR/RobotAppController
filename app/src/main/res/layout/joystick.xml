@@ -7,20 +7,6 @@
     android:background="#3c404b"
     tools:context=".JoystickActivity">
 
-    <androidx.appcompat.widget.AppCompatSeekBar
-        android:id="@+id/joy1"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:max="100"
-        android:progress="50"
-        android:splitTrack="false"
-        android:progressDrawable="@drawable/joyprog"
-        android:thumb="@drawable/thumbjoy"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.397" />
 
     <androidx.appcompat.widget.AppCompatSeekBar
         android:id="@+id/joy2"
@@ -31,12 +17,31 @@
         android:progress="50"
         android:progressDrawable="@drawable/joyprog"
         android:rotation="90"
-        android:thumb="@drawable/thumbjoy"
         android:splitTrack="false"
+        android:thumb="@drawable/thumbjoy"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.397" />
+
+    <com.codertainment.dpadview.DPadView
+        android:id="@+id/dpad"
+        android:layout_width="483dp"
+        android:layout_height="177dp"
+        android:layout_marginStart="84dp"
+        android:src="@drawable/tridpad"
+        app:centerCircleEnabled="true"
+        app:centerCircleNormalColor="#3c404b"
+        app:centerCirclePressEnabled="false"
+        app:centerCircleRatio="5"
+        app:directionSectionAngle="90"
+        app:imagePadding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.405"
+        app:normalColor="#1e232e"
+        tools:ignore="MissingClass" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/custom"
@@ -107,6 +112,7 @@
                 app:iconSize="50dp"
                 app:iconTint="@null" />
         </LinearLayout>
+
 
     </LinearLayout>
 

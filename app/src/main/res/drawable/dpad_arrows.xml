@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- Triângulo superior -->
+    <path
+        android:fillColor="#1976D2"
+        android:strokeColor="#1976D2"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:strokeLineCap="round"
+        android:pathData="M50,18 L40,37 L60,37 Z" />
+
+    <!-- Triângulo inferior -->
+    <path
+        android:fillColor="#1976D2"
+        android:strokeColor="#1976D2"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:strokeLineCap="round"
+        android:pathData="M50,82 L40,63 L60,63 Z" />
+
+    <!-- Triângulo esquerdo -->
+    <path
+        android:fillColor="#1976D2"
+        android:strokeColor="#1976D2"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:strokeLineCap="round"
+        android:pathData="M18,50 L37,40 L37,60 Z" />
+
+    <!-- Triângulo direito -->
+    <path
+        android:fillColor="#1976D2"
+        android:strokeColor="#1976D2"
+        android:strokeWidth="2"
+        android:strokeLineJoin="round"
+        android:strokeLineCap="round"
+        android:pathData="M82,50 L63,40 L63,60 Z" />
+</vector>

@@ -2,10 +2,14 @@ package com.example.aprendendo
 
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
+import android.view.MotionEvent.ACTION_DOWN
+import android.view.MotionEvent.ACTION_UP
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
+import com.codertainment.dpadview.DPadView
 import com.example.aprendendo.R.layout.joystick
-import com.google.android.material.button.MaterialButton // Importe a classe correta
+import com.google.android.material.button.MaterialButton
 
 class JoystickActivity : AppCompatActivity() {
 
@@ -17,26 +21,29 @@ class JoystickActivity : AppCompatActivity() {
         setupButtons()
     }
 
-    // NENHUMA MUDANÇA NECESSÁRIA AQUI
+
     private fun setupJoystick() {
-        val joystick1 = findViewById<SeekBar>(R.id.joy1)
+
+
+
+        val dpad = findViewById<DPadView>(R.id.dpad)
+
+        //checa a direção do dpad para poder saber que dados mandar para o esp32
+        dpad.onDirectionPressListener = { direction, action ->
+            if(direction == DPadView.Direction.UP){
+
+
+
+            }
+            if(direction == DPadView.Direction.DOWN){
+
+
+            }
+
+        }
+
+
         val joystick2 = findViewById<SeekBar>(R.id.joy2)
-
-        joystick1.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if(fromUser) {
-                    val valorjoyHoriz = progress
-                    Log.d("JOYSTICK1", "<$valorjoyHoriz>")
-                    BluetoothService.sendMessage("<$valorjoyHoriz>")
-                    println("<$valorjoyHoriz>")
-                }
-            }
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                seekBar?.progress = 50
-            }
-        })
-
         joystick2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
@@ -58,7 +65,7 @@ class JoystickActivity : AppCompatActivity() {
         })
     }
 
-    // ÚNICA MUDANÇA: O tipo do componente mudou de ImageView para MaterialButton
+
     private fun setupButtons() {
         val btfecha = findViewById<MaterialButton>(R.id.btf)
         btfecha.setOnClickListener {
