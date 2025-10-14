@@ -1,19 +1,11 @@
 package com.example.aprendendo
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.animation.OvershootInterpolator
-
-import android.widget.ImageView
 import android.widget.SeekBar
-import androidx.annotation.RequiresApi
-
 import androidx.appcompat.app.AppCompatActivity
 import com.example.aprendendo.R.layout.joystick
+import com.google.android.material.button.MaterialButton // Importe a classe correta
 
 class JoystickActivity : AppCompatActivity() {
 
@@ -25,28 +17,23 @@ class JoystickActivity : AppCompatActivity() {
         setupButtons()
     }
 
+    // NENHUMA MUDANÇA NECESSÁRIA AQUI
     private fun setupJoystick() {
         val joystick1 = findViewById<SeekBar>(R.id.joy1)
         val joystick2 = findViewById<SeekBar>(R.id.joy2)
 
-
-
         joystick1.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-               if(fromUser) {
-                   val valorjoyHoriz = progress
-                   Log.d("JOYSTICK1", "<$valorjoyHoriz>")
-                   BluetoothService.sendMessage("<$valorjoyHoriz>")
-                   println("<$valorjoyHoriz>")
-               }
-
+                if(fromUser) {
+                    val valorjoyHoriz = progress
+                    Log.d("JOYSTICK1", "<$valorjoyHoriz>")
+                    BluetoothService.sendMessage("<$valorjoyHoriz>")
+                    println("<$valorjoyHoriz>")
+                }
             }
-
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 seekBar?.progress = 50
-
             }
         })
 
@@ -55,7 +42,7 @@ class JoystickActivity : AppCompatActivity() {
                 if (fromUser) {
                     val valorjoyVertz1 = 460 - progress
                     val valorFinal = (progress.toDouble() * 1.8) + 180
-                    val valorjoyVertz2 = Math.round(valorFinal).toInt()
+                    val valorjoyVertz2 = valorjoyVertz1 + 50
 
                     Log.d("JOYSTICK2", "<$valorjoyVertz1>")
                     BluetoothService.sendMessage("<$valorjoyVertz1>")
@@ -64,27 +51,22 @@ class JoystickActivity : AppCompatActivity() {
                     println("y<$valorjoyVertz2>")
                 }
             }
-
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 seekBar?.progress = 50
-
             }
         })
     }
 
+    // ÚNICA MUDANÇA: O tipo do componente mudou de ImageView para MaterialButton
     private fun setupButtons() {
-        val btfecha = findViewById<ImageView>(R.id.btf)
+        val btfecha = findViewById<MaterialButton>(R.id.btf)
         btfecha.setOnClickListener {
             BluetoothService.sendMessage("<1000>")
-
         }
-        val btabre = findViewById<ImageView>(R.id.bta)
+        val btabre = findViewById<MaterialButton>(R.id.bta)
         btabre.setOnClickListener {
             BluetoothService.sendMessage("<1001>")
+        }
     }
-
-}}
-
-
+}

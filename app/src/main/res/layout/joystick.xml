@@ -4,21 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3c404b">
+    android:background="#3c404b"
+    tools:context=".JoystickActivity">
 
     <androidx.appcompat.widget.AppCompatSeekBar
         android:id="@+id/joy1"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:progressDrawable="@drawable/joyprog"
-        android:splitTrack="false"
-        android:progress="50"
+        android:layout_marginStart="24dp"
         android:max="100"
+        android:progress="50"
+        android:splitTrack="false"
+        android:progressDrawable="@drawable/joyprog"
         android:thumb="@drawable/thumbjoy"
-        android:thumbTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.111"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.397" />
@@ -27,78 +26,88 @@
         android:id="@+id/joy2"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:max="100"
         android:progress="50"
         android:progressDrawable="@drawable/joyprog"
         android:rotation="90"
-        android:splitTrack="false"
         android:thumb="@drawable/thumbjoy"
-        android:thumbTint="@null"
+        android:splitTrack="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.969"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.397" />
 
-    <TextView
-        android:id="@+id/garra"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="GARRA"
-        android:textColor="@color/white"
-        android:textSize="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.57"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.882" />
-
-    <ImageView
-        android:id="@+id/btf"
-        android:layout_width="80dp"
-        android:layout_height="75dp"
-        android:padding="0dp"
-        android:scaleType="centerInside"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.726"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:clickable="true"
-        app:layout_constraintVertical_bias="0.94"
-        app:srcCompat="@drawable/pinjto" />
-
-    <ImageView
-        android:id="@+id/bta"
-        android:layout_width="80dp"
-        android:layout_height="75dp"
-        android:padding="0dp"
-        android:scaleType="centerInside"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.866"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.94"
-        android:clickable="true"
-        app:srcCompat="@drawable/hujil" />
-
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/custom"
-        android:layout_width="237dp"
+        android:layout_width="0dp"
         android:layout_height="63dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="#1e232e"
         android:text="CUSTOM MODE"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:cornerRadius="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+
+    <LinearLayout
+        android:id="@+id/garra_layout_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.119"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.908" />
+        app:layout_constraintStart_toStartOf="@+id/guideline_vertical">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/garra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GARRA"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textColor="?attr/colorOnSurface"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btf"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/pinjto"
+                app:iconSize="50dp"
+                app:iconTint="@null" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bta"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/hujil"
+                app:iconSize="50dp"
+                app:iconTint="@null" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

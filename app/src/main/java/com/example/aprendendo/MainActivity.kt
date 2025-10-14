@@ -1,9 +1,14 @@
 package com.example.aprendendo
 
 import android.Manifest
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -11,25 +16,20 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.view.animation.OvershootInterpolator
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.IOException
 import java.util.UUID
 import kotlin.concurrent.thread
-import android.content.Context
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.annotation.SuppressLint
-import android.content.Intent
-import android.view.animation.OvershootInterpolator
-import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
 
 class MainActivity : AppCompatActivity() {
 
     private val bluetoothAdapter: BluetoothAdapter? by lazy { BluetoothAdapter.getDefaultAdapter() }
-    private lateinit var btBlue: ImageButton
     private val deviceList = mutableListOf<BluetoothDevice>()
     private var socket: BluetoothSocket? = null
     private val MY_UUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("InlinedApi")
     private fun buildPermissionsList(): List<String> {
         return buildList {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -67,7 +68,8 @@ class MainActivity : AppCompatActivity() {
                     add(Manifest.permission.BLUETOOTH_CONNECT)
                 }
             }
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 add(Manifest.permission.ACCESS_FINE_LOCATION)
             }
         }
@@ -75,14 +77,15 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("MissingPermission")
     private fun alert() {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        // MUDANÇA: Usando MaterialAlertDialogBuilder para um visual consistente
+        val builder = MaterialAlertDialogBuilder(this)
         builder.setTitle("CONFIGURAÇÕES")
             .setItems(arrayOf("Dispositivos bluetooth", "Dev mode")) { _, which ->
                 when (which) {
                     0 -> {
                         fetchPairedDevices()
                         if (deviceList.isNotEmpty()) {
-                            val bluetoothDialog = AlertDialog.Builder(this)
+                            val bluetoothDialog = MaterialAlertDialogBuilder(this)
                                 .setTitle("BLUETOOTH")
                                 .setItems(deviceList.map { it.name ?: it.address }.toTypedArray()) { _, which2 ->
                                     val selectedDevice = deviceList[which2]
@@ -110,6 +113,7 @@ class MainActivity : AppCompatActivity() {
             if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
                 initializeControls()
             } else {
+                Toast.makeText(this, "Permissões necessárias para usar o app", Toast.LENGTH_LONG).show()
                 finish()
             }
         }
@@ -122,6 +126,7 @@ class MainActivity : AppCompatActivity() {
         setupJoystick()
     }
 
+
     private fun setupSeekBars() {
         val seekBars = listOf(
             Triple(R.id.barx, R.id.grausx, "X"),
@@ -130,50 +135,58 @@ class MainActivity : AppCompatActivity() {
         )
 
         seekBars.forEach { (barId, textId, axis) ->
-            val seekBar = findViewById<SeekBar>(barId)
+            val seekBar = findViewById<android.widget.SeekBar>(barId) // <-- SeekBar
             val textView = findViewById<TextView>(textId)
 
-            textView.text = seekBar.progress.toString()
-            seekValues[axis] = seekBar.progress
+            val initialProgress = seekBar.progress
+            val initialValue = when (axis) {
+                "Y" -> initialProgress + 180
+                "Z" -> initialProgress + 360
+                else -> initialProgress
+            }
+            textView.text = initialValue.toString()
+            seekValues[axis] = initialProgress
 
-            seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                    textView.text = progress.toString()
+            seekBar.setOnSeekBarChangeListener(object : android.widget.SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(s: android.widget.SeekBar?, progress: Int, fromUser: Boolean) {
                     seekValues[axis] = progress
-                    val valorX = seekValues["X"] ?: 0
-                    val valorY = (seekValues["Y"] ?: 0) + 180
-                    val valorZ = (seekValues["Z"] ?: 0) + 360
-
-                    BluetoothService.sendMessage("<$valorX>")
-                    BluetoothService.sendMessage("<$valorY>")
-                    BluetoothService.sendMessage("<$valorZ>")
-
-                    println("<$valorY>")
+                    val displayValue = when (axis) {
+                        "Y" -> progress + 180
+                        "Z" -> progress + 360
+                        else -> progress
+                    }
+                    textView.text = displayValue.toString()
+                    val valorFinalX = seekValues["X"] ?: 0
+                    val valorFinalY = (seekValues["Y"] ?: 0) + 180
+                    val valorFinalZ = (seekValues["Z"] ?: 0) + 360
+                    BluetoothService.sendMessage("<$valorFinalX>")
+                    BluetoothService.sendMessage("<$valorFinalY>")
+                    BluetoothService.sendMessage("<$valorFinalZ>")
 
                 }
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+                override fun onStartTrackingTouch(s: android.widget.SeekBar?) {}
+                override fun onStopTrackingTouch(s: android.widget.SeekBar?) {}
             })
         }
     }
 
     private fun setupButtons() {
-        val bt_abre = findViewById<ImageButton>(R.id.bt_abre)
-        bt_abre.setOnClickListener {
+        
+        val btAbre = findViewById<MaterialButton>(R.id.bt_abre)
+        btAbre.setOnClickListener {
             BluetoothService.sendMessage("<1000>")
-            animarClique(bt_abre)
+            animarClique(btAbre)
         }
 
-        val bt_fecha = findViewById<ImageButton>(R.id.bt_fecha)
-        bt_fecha.setOnClickListener {
+        val btFecha = findViewById<MaterialButton>(R.id.bt_fecha)
+        btFecha.setOnClickListener {
             BluetoothService.sendMessage("<1001>")
-            animarClique(bt_fecha)
+            animarClique(btFecha)
         }
     }
 
-    @SuppressLint("SuspiciousIndentation")
     private fun setupJoystick() {
-        val btnjoy = findViewById<Button>(R.id.joybtn)
+        val btnjoy = findViewById<MaterialButton>(R.id.joybtn)
         btnjoy.setOnClickListener {
             val intent = Intent(this@MainActivity, JoystickActivity::class.java)
             startActivity(intent)
@@ -181,7 +194,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupDeviceList() {
-        btBlue = findViewById(R.id.bt_blue)
+        val btBlue = findViewById<MaterialButton>(R.id.bt_blue)
         btBlue.setOnClickListener { alert() }
     }
 
@@ -190,12 +203,9 @@ class MainActivity : AppCompatActivity() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             return
         }
-
         val pairedDevices = bluetoothAdapter!!.bondedDevices
         deviceList.clear()
-        if (pairedDevices.isNotEmpty()) {
-            deviceList.addAll(pairedDevices)
-        }
+        deviceList.addAll(pairedDevices)
     }
 
     private fun connectToDevice(device: BluetoothDevice) {
@@ -208,10 +218,15 @@ class MainActivity : AppCompatActivity() {
                 socket = device.createRfcommSocketToServiceRecord(MY_UUID)
                 socket?.connect()
 
-                // 🔹 Agora salva no Singleton
                 BluetoothService.socket = socket
+                runOnUiThread {
+                    Toast.makeText(this, "Conectado a ${device.name}", Toast.LENGTH_SHORT).show()
+                }
                 Log.d(TAG, "Conectado a ${device.name}")
             } catch (e: IOException) {
+                runOnUiThread {
+                    Toast.makeText(this, "Falha na conexão", Toast.LENGTH_SHORT).show()
+                }
                 Log.e(TAG, "Falha na conexão: ${e.message}", e)
             }
         }
@@ -226,17 +241,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun vib(duration: Long) {
-        val vibrador = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val efeito = VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE)
-            vibrador.vibrate(efeito)
-        } else {
-            vibrador.vibrate(duration)
-        }
-    }
+  //  private fun vib(duration: Long) {
+    //    val vibrador = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    //    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+   //         val efeito = VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE)
+    //        vibrador.vibrate(efeito)
+     //   } else {
+     //       @Suppress("DEPRECATION")
+    //        vibrador.vibrate(duration)
+    //    }
+   // }
 
-    @RequiresApi(Build.VERSION_CODES.HONEYCOMB)
+    // Nenhuma mudança necessária aqui
     fun animarClique(view: View, escala: Float = 1.3f, duracao: Long = 20) {
         val scaleUpX = ObjectAnimator.ofFloat(view, "scaleX", 1f, escala)
         val scaleUpY = ObjectAnimator.ofFloat(view, "scaleY", 1f, escala)
@@ -245,13 +261,13 @@ class MainActivity : AppCompatActivity() {
 
         val scaleUp = AnimatorSet().apply {
             playTogether(scaleUpX, scaleUpY)
-            duration = duracao
+            this.duration = duracao
             interpolator = OvershootInterpolator()
         }
 
         val scaleDown = AnimatorSet().apply {
             playTogether(scaleDownX, scaleDownY)
-            duration = duracao
+            this.duration = duracao
             startDelay = duracao
             interpolator = OvershootInterpolator()
         }
