@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.animation.OvershootInterpolator
+import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -132,37 +133,37 @@ class AxisActivity : AppCompatActivity() {
         )
 
         seekBars.forEach { (barId, textId, axis) ->
-            val seekBar = findViewById<android.widget.SeekBar>(barId) // <-- SeekBar
+            val seekBar = findViewById<SeekBar>(barId) // <-- SeekBar
             val textView = findViewById<TextView>(textId)
 
             val initialProgress = seekBar.progress
             val initialValue = when (axis) {
-                "Y" -> initialProgress
-                "Z" -> initialProgress
+                "Y" -> initialProgress + 180
+                "Z" -> initialProgress + 360
                 else -> initialProgress
             }
             textView.text = initialValue.toString()
             seekValues[axis] = initialProgress
 
-            seekBar.setOnSeekBarChangeListener(object : android.widget.SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(s: android.widget.SeekBar?, progress: Int, fromUser: Boolean) {
+            seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(s: SeekBar?, progress: Int, fromUser: Boolean) {
                     seekValues[axis] = progress
                     val displayValue = when (axis) {
-                        "Y" -> progress
-                        "Z" -> progress
+                        "Y" -> progress + 180
+                        "Z" -> progress + 360
                         else -> progress
                     }
                     textView.text = displayValue.toString()
                     val valorFinalX = seekValues["X"] ?: 0
-                    val valorFinalY = (seekValues["Y"] ?: 0)
-                    val valorFinalZ = (seekValues["Z"] ?: 0)
+                    val valorFinalY = (seekValues["Y"] ?: 0) + 180
+                    val valorFinalZ = (seekValues["Z"] ?: 0) + 360
                     BluetoothService.sendMessage("<$valorFinalX>")
                     BluetoothService.sendMessage("<$valorFinalY>")
                     BluetoothService.sendMessage("<$valorFinalZ>")
 
                 }
-                override fun onStartTrackingTouch(s: android.widget.SeekBar?) {}
-                override fun onStopTrackingTouch(s: android.widget.SeekBar?) {}
+                override fun onStartTrackingTouch(s: SeekBar?) {}
+                override fun onStopTrackingTouch(s: SeekBar?) {}
             })
         }
     }

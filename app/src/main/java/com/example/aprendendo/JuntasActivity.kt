@@ -133,37 +133,37 @@ class JuntasActivity : AppCompatActivity() {
         )
 
         seekBars.forEach { (barId, textId, axis) ->
-            val seekBar = findViewById<SeekBar>(barId) // <-- SeekBar
+            val seekBar = findViewById<android.widget.SeekBar>(barId) // <-- SeekBar
             val textView = findViewById<TextView>(textId)
 
             val initialProgress = seekBar.progress
             val initialValue = when (axis) {
-                "Y" -> initialProgress + 180
-                "Z" -> initialProgress + 360
+                "Y" -> initialProgress
+                "Z" -> initialProgress
                 else -> initialProgress
             }
             textView.text = initialValue.toString()
             seekValues[axis] = initialProgress
 
-            seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(s: SeekBar?, progress: Int, fromUser: Boolean) {
+            seekBar.setOnSeekBarChangeListener(object : android.widget.SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(s: android.widget.SeekBar?, progress: Int, fromUser: Boolean) {
                     seekValues[axis] = progress
                     val displayValue = when (axis) {
-                        "Y" -> progress + 180
-                        "Z" -> progress + 360
+                        "Y" -> progress
+                        "Z" -> progress
                         else -> progress
                     }
                     textView.text = displayValue.toString()
                     val valorFinalX = seekValues["X"] ?: 0
-                    val valorFinalY = (seekValues["Y"] ?: 0) + 180
-                    val valorFinalZ = (seekValues["Z"] ?: 0) + 360
+                    val valorFinalY = (seekValues["Y"] ?: 0)
+                    val valorFinalZ = (seekValues["Z"] ?: 0)
                     BluetoothService.sendMessage("<$valorFinalX>")
                     BluetoothService.sendMessage("<$valorFinalY>")
                     BluetoothService.sendMessage("<$valorFinalZ>")
 
                 }
-                override fun onStartTrackingTouch(s: SeekBar?) {}
-                override fun onStopTrackingTouch(s: SeekBar?) {}
+                override fun onStartTrackingTouch(s: android.widget.SeekBar?) {}
+                override fun onStopTrackingTouch(s: android.widget.SeekBar?) {}
             })
         }
     }

@@ -7,6 +7,10 @@ android {
     namespace = "com.example.aprendendo"
     compileSdk = 35
 
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
 
     defaultConfig {
         applicationId = "com.example.aprendendo"

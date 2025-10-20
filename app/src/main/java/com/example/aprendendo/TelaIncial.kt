@@ -3,45 +3,47 @@ package com.example.aprendendo
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.aprendendo.R.layout.tela_inicial
+import com.example.aprendendo.databinding.TelaInicialBinding
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
 
 class TelaIncial : AppCompatActivity() {
 
- override fun onCreate(savedInstanceState: Bundle?) {
-     super.onCreate(savedInstanceState)
-    setContentView(tela_inicial)
-     setupButtons()
+    private lateinit var binding: TelaInicialBinding
 
-}
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = TelaInicialBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-    private fun setupButtons() {
+        setupCards()
+    }
 
-        val botao_dpad = findViewById<MaterialButton>(R.id.bt_dpad)
-        val botao_axis = findViewById<MaterialButton>(R.id.bt_axis)
-        val botao_juntas = findViewById<MaterialButton>(R.id.bt_juntas)
-        val botao_config = findViewById<MaterialButton>(R.id.bt_config)
+    private fun setupCards() {
 
-       botao_juntas.setOnClickListener{
-           val intent = Intent(this@TelaIncial, JuntasActivity::class.java)
+        // Referência aos seus cards no XML
+        val cardDpad = findViewById<MaterialCardView>(R.id.dpmode)
+        val cardJuntas = findViewById<MaterialCardView>(R.id.juntasmode)
+        val cardCartesiano = findViewById<MaterialCardView>(R.id.cartesianomode)
+        val Bt_blue = findViewById<MaterialButton>(R.id.bt_config)
+
+
+        // Clique do modo Juntas
+        cardJuntas.setOnClickListener {
+            val intent = Intent(this@TelaIncial, JuntasActivity::class.java)
             startActivity(intent)
         }
 
-        botao_dpad.setOnClickListener{
+        // Clique do modo dpad
+        cardDpad.setOnClickListener {
             val intent = Intent(this@TelaIncial, JoystickActivity::class.java)
             startActivity(intent)
         }
 
-        botao_axis.setOnClickListener{
+        // Clique do modo Cartesiano
+        cardCartesiano.setOnClickListener {
             val intent = Intent(this@TelaIncial, AxisActivity::class.java)
             startActivity(intent)
-
         }
-
-
     }
-
-
-
-
 }

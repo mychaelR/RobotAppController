@@ -7,9 +7,8 @@
     android:background="#3c404b"
     tools:ignore="ExtraText">
 
-    //botão para mudar para o modo de config
 
-    //botão para mudar para o modo de axis
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bt_config"
@@ -29,64 +28,156 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    //botão para mudar para o modo juntas
 
-    //botão para mudar para o modo dpad
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_axis"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/dpmode"
         android:layout_width="410dp"
         android:layout_height="196dp"
-        android:backgroundTint="#0C5DC6"
-        android:minWidth="0dp"
-        android:minHeight="0dp"
-        android:padding="0dp"
-        app:backgroundTint="@color/transparent"
-        app:iconGravity="textEnd"
-        app:iconTint="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        app:cardBackgroundColor="#0c5dc6"
+        app:layout_constraintBottom_toTopOf="@+id/juntasmode"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.207" />
+        app:strokeWidth="0dp">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_juntas"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="8dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="108dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="MODO DPAD"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="Gráfico cartesiano"
+                android:scaleType="fitCenter"
+                android:src="@drawable/dpadbtns"
+
+                />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/juntasmode"
         android:layout_width="410dp"
         android:layout_height="196dp"
-        android:backgroundTint="#053d86"
-        android:minWidth="0dp"
-        android:minHeight="0dp"
-        android:padding="0dp"
-        app:backgroundTint="@color/transparent"
-        app:iconGravity="textEnd"
-        app:iconTint="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        app:cardBackgroundColor="#0a4592"
+        app:layout_constraintBottom_toTopOf="@+id/cartesianomode"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.573" />
+        app:layout_constraintTop_toBottomOf="@+id/dpmode"
+        app:strokeWidth="0dp">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/bt_dpad"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="8dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="108dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="MODO JUNTAS"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="Gráfico cartesiano"
+                android:scaleType="fitCenter"
+                android:src="@drawable/bracobtn"
+
+                />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cartesianomode"
         android:layout_width="410dp"
         android:layout_height="196dp"
-        android:backgroundTint="#021f4b"
-        android:minWidth="0dp"
-        android:minHeight="0dp"
-        android:padding="0dp"
-        app:backgroundTint="@color/transparent"
-        app:iconGravity="textEnd"
-        app:iconTint="@null"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="60dp"
+        android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardBackgroundColor="#00295d"
+        app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.955" />
+        app:layout_constraintTop_toBottomOf="@+id/juntasmode"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="8dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="519dp">
+
+            <!-- Texto no topo centralizado -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="MODO CARTESIANO"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <!-- Imagem abaixo, centralizada -->
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="Gráfico cartesiano"
+                android:scaleType="centerCrop"
+                android:src="@drawable/grafico_cartesiano"
+
+                />
+
+        </LinearLayout>
+        <!-- Esse layout interno controla o alinhamento -->
+    </com.google.android.material.card.MaterialCardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
